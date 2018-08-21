@@ -1,6 +1,4 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { addReminder, deleteReminder, clearReminders } from '../actions';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 
@@ -97,10 +95,4 @@ App.propTypes = {
   clearReminders: PropTypes.func.isRequired
 }
 
-const mapStateToProps = (state) => {
-  return {
-    reminders: state
-  };
-};
-
-export default connect(mapStateToProps, { addReminder, deleteReminder, clearReminders })(App);
+export default App;
