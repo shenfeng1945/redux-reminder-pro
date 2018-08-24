@@ -1,12 +1,14 @@
 import {ADD_REMINDER} from '../constants'
 
 const reminder = (action) =>{
+    const {text,time} = action
     return {
-        text: action.text,
-        id: Math.random()
+        id: Math.random(),
+        text,
+        time,
     }
 }
-const reminders = (state={},action={}) =>{
+const reminders = (state=[],action={}) =>{
     switch(action.type){
         case ADD_REMINDER:
         return [

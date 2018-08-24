@@ -1,26 +1,39 @@
 import React, { Component } from 'react';
 import {connect} from 'react-redux'
 import {addReminder} from '../actions'
+import PropTypes from 'prop-types'
+import moment from 'moment'
 
 class App extends Component {
    constructor(props){
        super(props)
        this.state = {
            text:'',
+           time:''
        }
    }
    addReminder(){
-       this.props.addReminder(this.state.text)
+       this.props.addReminder(this.state.text,this.state.time)
+   }
+   removeReminder(id){
+      console.log(id)
    }
    renderReminders(){
+       const {reminders} = this.props
        return (
            <ul className="list-group col-sm-8 mt-Z">
-              <li className="list-group-item">
-                <div className="list-item">
-                   <div>text</div>
-                   <div>tiem</div>
-                </div> 
-              </li>
+              {reminders.map(item=>{
+                 return (
+                  <li key={item.id} className="list-group-item">
+                    <div className="list-item">
+                     <div>{item.text}</div>
+                     <div>{moment(new Date(item.time)).fromNow()}</div>
+                    </div>
+                    <div className="close" onClick={()=>this.removeReminder(item.id)}>X</div> 
+                  </li>
+                 ) 
+              })}
+             
            </ul>
        )
    }
@@ -35,6 +48,9 @@ class App extends Component {
                         placeholder="I have to..."
                         onChange={(event)=>this.setState({text:event.target.value})}
                         />
+                <input type="datetime-local" 
+                       onChange={(event)=>this.setState({time:event.target.value})}
+                       className="form-control"/>
                </div> 
                <button type="button"
                        onClick={()=>this.addReminder()}
@@ -47,9 +63,12 @@ class App extends Component {
 }
 const mapStateToProps = (state) =>{
     return {
-        reminders: state.reminders
+        reminders: state
     }
 }
  
-
+App.propTypes = {
+    reminders: PropTypes.array.isRequired,
+    addReminder: PropTypes.func.isRequired,
+}
 export default connect(mapStateToProps,{addReminder})(App)
