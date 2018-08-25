@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {connect} from 'react-redux'
-import {addReminder} from '../actions'
+import {addReminder,removeReminder,clearReminders} from '../actions'
 import PropTypes from 'prop-types'
 import moment from 'moment'
 
@@ -16,7 +16,10 @@ class App extends Component {
        this.props.addReminder(this.state.text,this.state.time)
    }
    removeReminder(id){
-      console.log(id)
+      this.props.removeReminder(id);
+   }
+   clearReminders(){
+       this.props.clearReminders()
    }
    renderReminders(){
        const {reminders} = this.props
@@ -57,6 +60,8 @@ class App extends Component {
                        className="btn btn-success">Add Reminder</button>
             </div>
             {this.renderReminders()}
+            <div className="btn btn-danger mt-3"
+                 onClick={()=>this.clearReminders()}>Clear All Reminders</div>
           </div>
        )
    } 
@@ -71,4 +76,4 @@ App.propTypes = {
     reminders: PropTypes.array.isRequired,
     addReminder: PropTypes.func.isRequired,
 }
-export default connect(mapStateToProps,{addReminder})(App)
+export default connect(mapStateToProps,{addReminder,removeReminder,clearReminders})(App)
